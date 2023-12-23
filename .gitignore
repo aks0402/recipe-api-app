@@ -159,3 +159,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 
 .idea/
+
+
+# docker-compose run --rm app sh -c "python manage.py createsuperuser"
+# super@example.com SUPER
+# admin@example.com strong_password
+# user3@example.com strong_password

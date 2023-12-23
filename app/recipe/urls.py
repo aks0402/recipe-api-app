@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 app_name = 'recipe'
 router = DefaultRouter()
 router.register('recipes', views.RecipeViewSet)
+router.register('tag', views.TagViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
