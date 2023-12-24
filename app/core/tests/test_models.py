@@ -6,7 +6,8 @@ from core import models
 
 
 def create_user(email='user@example.com', password='testpass123'):
-    return get_user_model().objects.create_user(email,password)
+    return get_user_model().objects.create_user(email, password)
+
 
 class ModelTests(TestCase):
 
@@ -66,4 +67,3 @@ class ModelTests(TestCase):
         tag = models.Tag.objects.create(user=user, name='Tag1')
 
         self.assertEqual(str(tag), tag.name)
-

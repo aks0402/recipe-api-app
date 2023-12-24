@@ -8,6 +8,8 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
         read_only_fields = ['id']
 
+    # def create(self, validated_data):
+
 
 class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
@@ -22,11 +24,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         auth_user = self.context['request'].user
         for tag in tags:
-            tag_obj, created = Tag.object.get_or_create(
+            tag_obj, created = Tag.objects.get_or_create(
                 user=auth_user,
                 **tag
             )
-            recipe.tag.add(tag_obj)
+            recipe.tags.add(tag_obj)
 
 
 class RecipeDetailsSerializer(RecipeSerializer):

@@ -11,6 +11,7 @@ from core.models import Recipe, Tag
 from recipe.serializers import (
     RecipeSerializer,
     RecipeDetailsSerializer,
+    TagSerializer,
 )
 
 RECIPES_URL = reverse('recipe:recipe-list')
@@ -92,7 +93,7 @@ class PrivateRecipeApiTests(TestCase):
         payload = {
             "title": 'Sample',
             'time_minutes': 30,
-            'price': Decimal('5.99')
+            'price': Decimal('5.99'),
         }
         res = self.client.post(RECIPES_URL, payload)
 
@@ -179,7 +180,7 @@ class PrivateRecipeApiTests(TestCase):
             'title': 'Thai Prawn Curry',
             'time_minutes': 30,
             'price': Decimal('2.50'),
-            'tags': [{'name': 'Thai'}, {'name': 'Dinner'}]
+            'tags': [{'name': 'Thai'}, {'name': 'Dinner'}],
         }
 
         res = self.client.post(RECIPES_URL, payload, format='json')
@@ -188,19 +189,16 @@ class PrivateRecipeApiTests(TestCase):
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
-        self.assertEqual(recipe.tag.count(), 2)
+        self.assertEqual(recipe.tags.count(), 2)
         for tag in payload['tags']:
-            exists = recipe.tag.filter(
+            exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user
             ).exists()
             self.assertTrue(exists)
 
     def test_create_recipe_with_existing_tags(self):
-        tag_indian = Tag.objects.create(
-            user=self.user,
-            name="Indian"
-        )
+        tag_indian = Tag.objects.create(user=self.user, name="Indian")
         payload = {
             'title': 'Pongal',
             'time_minutes': 60,
@@ -214,10 +212,10 @@ class PrivateRecipeApiTests(TestCase):
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
-        self.assertEqual(recipe.tag.count(), 2)
-        self.assertIn(tag_indian, recipe.tag.all())
+        self.assertEqual(recipe.tags.count(), 2)
+        self.assertIn(tag_indian, recipe.tags.all())
         for tag in payload['tags']:
-            exists = recipe.tag.filter(
+            exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user
             ).exists()

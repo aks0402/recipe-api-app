@@ -1,16 +1,12 @@
-from decimal import Decimal
+from core.models import Tag
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-
-from rest_framework import status
-from rest_framework.test import APIClient
-
-from core.models import Tag
-
 from recipe.serializers import (
     TagSerializer,
 )
+from rest_framework import status
+from rest_framework.test import APIClient
 
 TAGS_URL = reverse('recipe:tag-list')
 
@@ -34,7 +30,7 @@ class PublicTagsApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PublicTagsApiTests(TestCase):
+class PrivateTagsApiTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
